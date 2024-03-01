@@ -33,16 +33,23 @@ class PostRepositoryTest extends TestCase
 	{
 		parent::tearDown();
 
-		// TODO: Read the username and host from the .env file
+        // Load environment variables from .env file
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->load();
 
-		$dsn = "mysql:host=localhost;";
+        // Read database credentials from environment variables
+        $host = $_ENV['DB_HOST'];
+        $username = $_ENV['DB_USERNAME'];
+        $password = $_ENV['DB_PASSWORD'];
+
+		$dsn = "mysql:host=$host;";
 		$options = [
 			PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
 			PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 			PDO::ATTR_EMULATE_PREPARES   => false,
 		];
 		try {
-			$pdo = new PDO($dsn, 'root', 'KimChaewon', $options);
+			$pdo = new PDO($dsn, $username, $password, $options);
 		} catch (PDOException $e) {
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
@@ -60,17 +67,55 @@ class PostRepositoryTest extends TestCase
 
 	public function testPostRetrieval()
 	{
-		// TODO test the "get" methods in the PostRepository class
-        // assertcount
+        $postRepository = new PostRepository();
+
+        $posts = $postRepository->getAllPosts();
+
+        foreach ($posts as $post) {
+            $postId = $post->id;
+
+            $retrievedPost = $postRepository->getPostById($postId);
+
+            $this->assertEquals($postId, $retrievedPost->id);
+        }
 	}
 
 	public function testPostUpdate()
 	{
-		// TODO create a post, update the title and body, and check that you get the expected title and body
+        // Create a test instance of PostRepository or mock it if it depends on external resources
+        $postRepository = new PostRepository();
+
+        // Create a post
+        $postId = $postRepository->savePost('Initial Title', 'Initial Body')->id;
+
+        // Update the post title and body
+        $updatedTitle = 'Updated Title';
+        $updatedBody = 'Updated Body';
+        $postRepository->updatePost($postId, $updatedTitle, $updatedBody);
+
+        // Retrieve the updated post
+        $updatedPost = $postRepository->getPostById($postId);
+
+        // Assert that the title and body have been updated as expected
+        $this->assertEquals($updatedTitle, $updatedPost->title);
+        $this->assertEquals($updatedBody, $updatedPost->body);
 	}
 
 	public function testPostDeletion()
 	{
-		// TODO: delete a post by ID and check that it isn't in the database anymore
+        // Create a instance of Post Repository
+        $postRepository = new PostRepository();
+
+        // Create a post
+        $postId = $postRepository->savePost('Title', 'Body')->id;
+
+        // Delete the post
+        $postRepository->deletePostById($postId);
+
+        // Attempt to retrieve the deleted post
+        $deletedPost = $postRepository->getPostById($postId);
+
+        // Assert that the deleted post is null, indicating it doesn't exist anymore
+        $this->assertEquals(null, $deletedPost);
 	}
 }
