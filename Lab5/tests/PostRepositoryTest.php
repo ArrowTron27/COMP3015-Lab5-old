@@ -36,7 +36,7 @@ class PostRepositoryTest extends TestCase
 		parent::tearDown();
 
         // Load environment variables from .env file
-        $dotenv = Dotenv::createImmutable(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR, '.env.ci');
+        $dotenv = Dotenv::createImmutable(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR, '.env.ci');
         $dotenv->load();
 
         // Read database credentials from environment variables
