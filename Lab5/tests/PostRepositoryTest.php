@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 use src\Repositories\PostRepository;
 
+use Dotenv\Dotenv;
+
 class PostRepositoryTest extends TestCase
 {
 	private PostRepository $postRepository;
@@ -34,13 +36,13 @@ class PostRepositoryTest extends TestCase
 		parent::tearDown();
 
         // Load environment variables from .env file
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv = Dotenv::createImmutable(__DIR__ . `/../../`, '.env.ci');
         $dotenv->load();
 
         // Read database credentials from environment variables
         $host = $_ENV['DB_HOST'];
-        $username = $_ENV['DB_USERNAME'];
-        $password = $_ENV['DB_PASSWORD'];
+        $username = $_ENV['DB_USER'];
+        $password = $_ENV['DB_PASS'];
 
 		$dsn = "mysql:host=$host;";
 		$options = [

@@ -1,10 +1,10 @@
 {
-  "name": "cfenn/lab-5-starter-kit",
+  "name": "awong/lab-5",
   "type": "project",
   "authors": [
     {
-      "name": "Christian Fenn",
-      "email": "christian_fenn@bcit.ca"
+      "name": "Aaron Wong",
+      "email": "awong569@my.bcit.ca"
     }
   ],
   "require": {

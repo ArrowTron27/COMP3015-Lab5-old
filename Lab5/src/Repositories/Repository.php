@@ -28,9 +28,9 @@ class Repository
 
 
         if (php_sapi_name() === 'cli'){
-            $dotenv = Dotenv::createImmutable(__DIR__ . `/../../`, '.env.ci');
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../../', '.env.ci');  //using testing
         } else {
-            $dotenv = Dotenv::createImmutable(__DIR__ . `/../../`);
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../../'); //using development
         }
 
         $dotenv->load();
@@ -39,7 +39,7 @@ class Repository
 		$this->hostname = $_ENV['DB_HOST'];
 		$this->username = $_ENV['DB_USER'];
 		$this->databaseName = $_ENV['DB_NAME'];
-        $this->databasePassword = $_ENV['DB_PASSWORD'];
+        $this->databasePassword = $_ENV['DB_PASS'];
 		$this->charset = 'utf8mb4';
 
 		$dsn = "mysql:host=$this->hostname;dbname=$this->databaseName;charset=$this->charset";
