@@ -36,7 +36,7 @@ class PostRepositoryTest extends TestCase
 		parent::tearDown();
 
         // Load environment variables from .env file
-        $dotenv = Dotenv::createImmutable(__DIR__ . `/../../`, '.env.ci');
+        $dotenv = Dotenv::createImmutable(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR, '.env.ci');
         $dotenv->load();
 
         // Read database credentials from environment variables
@@ -65,6 +65,8 @@ class PostRepositoryTest extends TestCase
         //$this->assertEquals(`1`, $post->id);
 		$this->assertEquals('test', $post->title);
 		$this->assertEquals('body', $post->body);
+
+        parent::tearDown();
 	}
 
 	public function testPostRetrieval()
@@ -80,6 +82,7 @@ class PostRepositoryTest extends TestCase
 
             $this->assertEquals($postId, $retrievedPost->id);
         }
+        parent::tearDown();
 	}
 
 	public function testPostUpdate()
@@ -101,6 +104,8 @@ class PostRepositoryTest extends TestCase
         // Assert that the title and body have been updated as expected
         $this->assertEquals($updatedTitle, $updatedPost->title);
         $this->assertEquals($updatedBody, $updatedPost->body);
+
+        parent::tearDown();
 	}
 
 	public function testPostDeletion()
@@ -119,5 +124,7 @@ class PostRepositoryTest extends TestCase
 
         // Assert that the deleted post is null, indicating it doesn't exist anymore
         $this->assertEquals(null, $deletedPost);
+
+        parent::tearDown();
 	}
 }
